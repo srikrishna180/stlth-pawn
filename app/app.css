@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand, taken from the existing STLTH Pawn site and tightened up */
+  --color-teal-50:  #effbf9;
+  --color-teal-100: #d7f5f0;
+  --color-teal-200: #b0eae3;
+  --color-teal-400: #45c6bd;
+  --color-teal-500: #2BB3AC;
+  --color-teal-600: #1d9a94;
+  --color-teal-700: #1a7c78;
+  --color-teal-900: #124f4d;
+
+  --color-sand-400: #F5B82E;
+  --color-sand-500: #E5A712;
+
+  --color-ink-500: #5b6b78;
+  --color-ink-700: #2e3c47;
+  --color-ink-900: #16212a;
+
+  --radius-card: 1rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-white text-ink-700 font-sans antialiased;
+  }
+
+  /* Form controls do not shrink below their intrinsic width unless told to —
+     this is what pushes date and file inputs off-screen on phones. */
+  input, button, textarea, select {
+    min-width: 0;
+    max-width: 100%;
+    font: inherit;
+  }
+
+  img, svg, video, canvas { max-width: 100%; }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-teal-600 rounded-sm;
+  }
+
+  ::selection { @apply bg-teal-500 text-white; }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold
+           transition-all duration-200 active:scale-[0.98] cursor-pointer;
+  }
+  .btn-primary {
+    @apply bg-teal-500 text-white shadow-lg shadow-teal-500/25
+           hover:bg-teal-600 hover:shadow-xl hover:shadow-teal-500/30 hover:-translate-y-0.5
+           disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-lg;
+  }
+  .btn-ghost {
+    @apply border border-ink-500/25 bg-white text-ink-700 hover:border-teal-500 hover:text-teal-700 hover:-translate-y-0.5;
+  }
+  .btn-sand {
+    @apply bg-sand-400 text-ink-900 shadow-lg shadow-sand-400/30 hover:bg-sand-500 hover:-translate-y-0.5;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-[0.14em] text-ink-500;
+  }
+  .field-input {
+    @apply w-full rounded-xl border border-ink-500/20 bg-white px-4 py-3 text-base text-ink-900
+           placeholder:text-ink-500/50 transition
+           hover:border-ink-500/40
+           focus:border-teal-500 focus:ring-4 focus:ring-teal-500/15 focus:outline-none;
+  }
+  .field-error { @apply mt-1.5 block text-sm text-red-600; }
+
+  .card {
+    @apply rounded-card border border-ink-500/12 bg-white shadow-sm;
+  }
+}
+
+/* reveal-on-scroll */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay, 0ms);
+}
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 0.9s linear infinite; }
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.96) translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.pop { animation: pop 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
